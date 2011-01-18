@@ -60,8 +60,8 @@
   (error "Invalid syntax: " s))
 
 (define *matchers*
-  (list match-int
-        match-float
+  (list match-float
+        match-int
         match-string
         match-method-call
         match-identifier
