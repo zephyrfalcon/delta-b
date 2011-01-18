@@ -1,5 +1,10 @@
 ;; tokenizer.scm
 
+(define-module tokenizer
+  (export tokenize))
+
+(select-module tokenizer)
+
 (use srfi-13)
 
 ;;; --- regular expressions ---
@@ -67,7 +72,6 @@
         match-lbrace
         match-rbrace))
 
-;; XXX needs to handle whitespace
 (define (find-next-token s)
   (let loop ((matchers *matchers*))
     (if (null? matchers)
@@ -79,4 +83,13 @@
               (loop (cdr matchers)))))))
 
 (define (tokenize s)
-  ...)
+  (let loop ((text s) (tokens '()))
+    (let ((text (string-trim text)))  ;; strip leading whitespace
+      (if (= (string-length text) 0)  ;; no text left?
+          (reverse tokens)            ;; done
+          (receive (matched-token rest)
+              (find-next-token text)
+            (if matched-token
+                (loop rest (cons matched-token tokens))
+                (error "this should not happen :-o")))))))
+    
