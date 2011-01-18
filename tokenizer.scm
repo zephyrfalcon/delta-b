@@ -30,7 +30,7 @@
           (let ((matched (rxmatch-substring match)))
             (values (list token-name (transformer matched))
                     (substring s (string-length matched) (string-length s))))
-          #f))))
+          (values #f s)))))
 
 (define match-int
   (make-regex-matcher re-int 'integer string->number))
@@ -65,11 +65,18 @@
         match-lparen
         match-rparen
         match-lbrace
-        match-rbrace
-        match-error))
+        match-rbrace))
 
+;; XXX needs to handle whitespace
 (define (find-next-token s)
-  ...)
+  (let loop ((matchers *matchers*))
+    (if (null? matchers)
+        (error "Invalid syntax: " s)
+        (receive (matched-token rest)
+            ((car matchers) s)
+          (if matched-token
+              (values matched-token rest) ;; found a match
+              (loop (cdr matchers)))))))
 
 (define (tokenize s)
   ...)
