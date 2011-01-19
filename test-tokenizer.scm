@@ -25,5 +25,12 @@
 (test* "" '((lbrace "{") (integer 3) (rbrace "}"))
        (tokenize "{ 3 }"))
 
+(define s1 "4. -- this is a comment")
+(test* "" '((integer 4) (dot ".")) (tokenize s1))
+(define s2 "4. -- this is a comment\n")
+(test* "" '((integer 4) (dot ".")) (tokenize s2))
+(define s3 "4. -- this is a comment\n 5")
+(test* "" '((integer 4) (dot ".") (integer 5)) (tokenize s3))
+
 (test-end)
 

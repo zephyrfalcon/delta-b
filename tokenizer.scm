@@ -5,6 +5,7 @@
 
 (select-module tokenizer)
 
+(use srfi-1)
 (use srfi-13)
 
 ;;; --- regular expressions ---
@@ -50,6 +51,15 @@
 (define match-symbol
   (make-regex-matcher re-symbol 'symbol identity))
 
+(define (match-comment s)
+  (if (string-prefix? "--" s)
+      (let ((next-newline-pos (string-index s #\newline)))
+        (if next-newline-pos
+            (values (list 'comment (substring s 0 next-newline-pos))
+                    (substring s next-newline-pos (string-length s)))
+            (values (list 'comment s) "")))  ;; comment up to end of string
+      (values #f #f)))
+
 (define match-dot (make-regex-matcher re-dot 'dot identity))
 (define match-lparen (make-regex-matcher re-lparen 'lparen identity))
 (define match-rparen (make-regex-matcher re-rparen 'rparen identity))
@@ -64,6 +74,7 @@
         match-int
         match-string
         match-method-call
+        match-comment
         match-identifier
         match-symbol
         match-dot
@@ -86,7 +97,8 @@
   (let loop ((text s) (tokens '()))
     (let ((text (string-trim text)))  ;; strip leading whitespace
       (if (= (string-length text) 0)  ;; no text left?
-          (reverse tokens)            ;; done
+          (filter (lambda (tok) (not (equal? (car tok) 'comment)))
+                  (reverse tokens))   ;; done
           (receive (matched-token rest)
               (find-next-token text)
             (if matched-token
