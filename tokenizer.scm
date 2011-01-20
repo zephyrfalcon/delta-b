@@ -51,6 +51,7 @@
 (define match-symbol
   (make-regex-matcher re-symbol 'symbol identity))
 
+;; using regexen doesn't work well here
 (define (match-comment s)
   (if (string-prefix? "--" s)
       (let ((next-newline-pos (string-index s #\newline)))
