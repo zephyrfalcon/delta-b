@@ -52,11 +52,24 @@ a ".".)
 
 |#
 
+(use srfi-1)
 (load "ast") ;; for now; turn into module later
 
 (define *literals* '(integer float string identifier symbol))
 
 (define (_match-zero-or-more matcher tokens)
+  ...)
+
+(define (_match-any matchers tokens)
+  (if (null? matchers)
+      (values #f #f)
+      (receive (match rest)
+          ((car matchers) tokens)
+        (if match
+            (values match rest)
+            (_match-any (cdr matchers) tokens)))))
+
+(define (_match-all matchers tokens)
   ...)
 
 ;;; --- matchers ---
@@ -66,13 +79,24 @@ a ".".)
 ;; after matching, or #f #f if there was no match.
 
 (define (match-program tokens)
-  ...)
+  ;; returns a list of statements that make up the program.
+  (let loop ((tokens-left tokens) (nodes-collected '()))
+    (if (null? tokens-left)
+        (reverse nodes-collected) ;; done
+        (receive (match rest)
+            (match-statement tokens-left)
+          (if match
+              (loop rest (cons match nodes-collected))
+              (error "Invalid syntax: " tokens-left))))))
 
 (define (match-statement tokens)
   ...)
 
 (define (match-expression tokens)
-  ...)
+  (_match-any (list match-literal
+                    match-block
+                    match-parenthesized-statement)
+              tokens))
 
 (define (match-literal tokens)
   (let ((token (car tokens)))
@@ -82,8 +106,38 @@ a ".".)
         (values #f #f))))
 
 (define (match-block tokens)
-  ...)
+  (if (and (not (null? tokens))
+           (equal? (caar tokens) 'lbrace))
+      ... ;; match zero or more statements...
+          ;; then match the rbrace
+      (values #f #f)))
 
 (define (match-method-call-chain tokens)
-  ...)
+  (receive (head rest)
+      (match-expression tokens)
+    (if head
+        ...  ;; zero or more method calls
+        (values #f #f))))
 
+(define (match-method-call tokens)
+  ;; match a single method call, i.e. the method name and zero or more
+  ;; arguments.
+  (if (and (not (null? tokens))
+           (equal? (caar tokens) 'method-call-name))
+      ;; match zero or more arguments (expressions).
+      ;; does NOT match terminators, that is a job for match-statement.
+      (let ((method-call-name (cadar tokens)))
+        (let loop ((tokens-left (cdr tokens)) (args '()))
+          (receive (match rest)
+              (match-expression tokens-left)
+            (if match
+                (loop rest (cons match args))
+                (values (make-ast-method-call method-call-name (reverse args))
+                        tokens-left)))))
+      (values #f #f)))
+
+(define (match-parenthesized-statement tokens)
+  (if (and (not (null? tokens))
+           (equal? (caar tokens) 'lparen))
+      ...
+      (values #f #f)))
