@@ -17,7 +17,7 @@
 ;; can be: integers, floats, strings, symbols, etc
 
 (define (make-ast-literal token)
-  (make-ast-node 'literal token)
+  (make-ast-node 'literal token))
 (define (ast-literal? node)
   (equal? (car node) 'literal))
 
@@ -47,7 +47,7 @@
 ;; <args>* is a list of zero or more arguments (all AST nodes).
 
 (define (make-ast-method-call method args)
-  (make-ast-node 'method-call (cons method . args)))
+  (make-ast-node 'method-call (cons method args)))
 (define (ast-method-call? node)
   (equal? (car node) 'method-call))
 (define (ast-method-call-method node)
@@ -58,7 +58,7 @@
 ;; method call chains
 
 (define (make-ast-method-call-chain head calls)
-  (make-ast-node 'method-call-chain (cons head . calls)))
+  (make-ast-node 'method-call-chain (cons head calls)))
 (define (ast-method-call-chain? node)
   (equal? (car node) 'method-call-chain))
 (define (ast-method-call-chain-head node)

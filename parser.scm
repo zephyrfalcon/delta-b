@@ -48,5 +48,42 @@ or a statement enclosed in parentheses.
 last statement inside the block does not need to be followed by
 a ".".)
 
+[[NOTE: Some syntactic sugar will be added later, esp. for assignments.]]
+
 |#
+
+(load "ast") ;; for now; turn into module later
+
+(define *literals* '(integer float string identifier symbol))
+
+(define (_match-zero-or-more matcher tokens)
+  ...)
+
+;;; --- matchers ---
+
+;; The following matching procedures return two values; an AST node
+;; (or list of nodes, if appropriate) and the list of tokens left
+;; after matching, or #f #f if there was no match.
+
+(define (match-program tokens)
+  ...)
+
+(define (match-statement tokens)
+  ...)
+
+(define (match-expression tokens)
+  ...)
+
+(define (match-literal tokens)
+  (let ((token (car tokens)))
+    (if (member (car token) *literals*)
+        (values (make-ast-node 'literal token)
+                (cdr tokens))
+        (values #f #f))))
+
+(define (match-block tokens)
+  ...)
+
+(define (match-method-call-chain tokens)
+  ...)
 
