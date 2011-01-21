@@ -9,6 +9,8 @@
   (car node))
 (define (ast-value node)
   (cdr node))
+(define (ast-node? x)
+  (pair? x))
 
 ;; literals
 ;; represented as: (literal . <token>)
