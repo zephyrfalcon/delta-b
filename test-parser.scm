@@ -45,6 +45,16 @@
     (match-method-call (cdr t3))
   (test* "" '(method-call . ("println:" . ())) matched))
 
+;; XXX use accessors to make it more clear what is matched
+(test-section "match-method-call-chain")
+(receive (matched rest)
+    (match-method-call-chain t1)
+  (test* "" '(method-call-chain
+              . ((literal integer 4)
+                 . ((method-call . ("plus:" (literal integer 5))))))
+         matched)
+  (test* "" '((dot ".")) rest))
+
 (test-section "match-expression")
 
 (receive (matched rest)

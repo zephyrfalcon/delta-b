@@ -120,10 +120,14 @@ a ".".)
       (values #f #f)))
 
 (define (match-method-call-chain tokens)
-  (receive (head rest)
+  (receive (head rest-1)
       (match-expression tokens)
     (if head
-        ...  ;; zero or more method calls
+        ;; match zero or more method calls
+        (receive (method-calls rest-2)
+            (_match-zero-or-more match-method-call rest-1)
+          (values (make-ast-method-call-chain head method-calls)
+                  rest-2))
         (values #f #f))))
 
 (define (match-method-call tokens)
