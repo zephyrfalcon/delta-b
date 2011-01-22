@@ -19,5 +19,6 @@
           (mainloop)))))
 
 (define (main args)
+  (print *welcome-msg*)
   (mainloop))
 
