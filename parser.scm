@@ -6,8 +6,8 @@ Grammar, sort of:
 
 <literal> ::= integer | float | string | symbol | identifier
 <expr> ::= <literal>
-         | <block>
-         | "(" <statement> ")"
+| <block>
+| "(" <statement> ")"
 <block> ::= "{" <statement>* "}"
 <statement> ::= <method-call-chain> "."?
 <method-call-chain> ::= <expr> <method-calls>*
@@ -24,16 +24,16 @@ identifiers (bar, is-true)
 calls, each of which contain of a method name and zero or more
 arguments. A method name consists of an identifier plus a colon:
 
-  3 plus: 4
-  "hello world" length: println:
-  list: 1 2 3 println:
+3 plus: 4
+"hello world" length: println:
+list: 1 2 3 println:
 
 A statement is usually followed by a "." to indicate its end, but this
 can be omitted if there is another token indicating the
 end (specifically, a ")" or a "}").
 
-  3 plus: 4.
-  (5 minus: 2) println:.
+3 plus: 4.
+(5 minus: 2) println:.
 
 The arguments of a method call are determined as follows: each
 expression following the method name is considered an argument of that
@@ -45,8 +45,8 @@ arguments, can be an expression. An expression is a literal, a block
 or a statement enclosed in parentheses.
 
 4. A block consists of zero or more statements between "{" "}". (The
-last statement inside the block does not need to be followed by
-a ".".)
+                                                                 last statement inside the block does not need to be followed by
+                                                                 a ".".)
 
 [[NOTE: Some syntactic sugar will be added later, esp. for assignments.]]
 
@@ -96,8 +96,21 @@ a ".".)
               (loop rest (cons match nodes-collected))
               (error "Invalid syntax: " tokens-left))))))
 
+;; a statement is a method call chain followed by a terminator (dot,
+;; rparen, rbrace). note that the method call chain may have zero
+;; method calls, i.e. consists of a single value.
 (define (match-statement tokens)
-  ...)
+  (receive (expr rest)
+      (match-method-call-chain tokens)
+    (if expr
+        (cond ((null? rest)
+               (error "Unexpected end of tokens"))
+              ((equal? (caar rest) 'dot)
+               (values expr (cdr rest)))
+              ((member (caar rest) '(rparen rbrace))
+               (values expr rest))
+              (else (error "Invalid syntax: " rest)))
+        (values #f #f))))
 
 (define (match-expression tokens)
   (_match-any (list match-literal
@@ -116,7 +129,7 @@ a ".".)
   (if (and (not (null? tokens))
            (equal? (caar tokens) 'lbrace))
       ... ;; match zero or more statements...
-          ;; then match the rbrace
+      ;; then match the rbrace
       (values #f #f)))
 
 (define (match-method-call-chain tokens)
@@ -147,8 +160,16 @@ a ".".)
                         tokens-left)))))
       (values #f #f)))
 
+;; currently only matches a method call chain between ( ).
 (define (match-parenthesized-statement tokens)
   (if (and (not (null? tokens))
            (equal? (caar tokens) 'lparen))
-      ...
+      (receive (mcc rest)
+          (match-method-call-chain (cdr tokens))
+        (if mcc
+            (if (and (not (null? rest))
+                     (equal? (caar rest) 'rparen))
+                (values mcc (cdr rest))
+                (values #f #f))
+            (values #f #f)))
       (values #f #f)))

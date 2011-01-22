@@ -11,6 +11,8 @@
              (integer 2) (integer 3) (method-call-name "println:")
              (dot ".")))
 (define t3 '((integer 5) (method-call-name "println:") (dot ".")))
+(define t4 '((lparen "(") (integer 4) (method-call-name "plus:")
+             (integer 5) (rparen ")")))
 
 (test-section "match-literal")
 (receive (matched rest)
@@ -60,5 +62,19 @@
 (receive (matched rest)
     (match-expression t1)
   (test* "" '(literal . (integer 4)) matched))
+
+(test-section "match-statement")
+(receive (matched rest)
+    (match-statement t1)
+  (test* "" #t (ast-method-call-chain? matched))
+  ;; XXX add more tests here using accessors...
+  (test* "" '() rest))
+
+(test-section "match-parenthesized-statement")
+(receive (matched rest)
+    (match-parenthesized-statement t4)
+  (test* "" #t (ast-method-call-chain? matched))
+  ;; XXX add more tests here using accessors...
+  (test* "" '() rest))
 
 (test-end)
