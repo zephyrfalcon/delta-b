@@ -128,8 +128,14 @@ or a statement enclosed in parentheses.
 (define (match-block tokens)
   (if (and (not (null? tokens))
            (equal? (caar tokens) 'lbrace))
-      ... ;; match zero or more statements...
-      ;; then match the rbrace
+      ;; match zero or more statements...
+      (receive (stmts rest)
+          (_match-zero-or-more match-statement (cdr tokens))
+        ;; ...then match the "}"
+        (if (and (not (null? rest))
+                 (equal? (caar rest) 'rbrace))
+            (values (make-ast-block stmts) (cdr rest))
+            (values #f #f)))
       (values #f #f)))
 
 (define (match-method-call-chain tokens)
