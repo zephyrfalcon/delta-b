@@ -1,5 +1,9 @@
 ;; parser.scm
 
+(define-module parser
+  (export-all))  ;; for now; be more selective later
+(select-module parser)
+
 #|
 
 Grammar, sort of:
@@ -44,9 +48,8 @@ terminator (".", ")", "}").
 arguments, can be an expression. An expression is a literal, a block
 or a statement enclosed in parentheses.
 
-4. A block consists of zero or more statements between "{" "}". (The
-                                                                 last statement inside the block does not need to be followed by
-                                                                 a ".".)
+4. A block consists of zero or more statements between "{" "}".
+(The last statement inside the block does not need to be followed by a ".".)
 
 [[NOTE: Some syntactic sugar will be added later, esp. for assignments.]]
 
@@ -75,9 +78,6 @@ or a statement enclosed in parentheses.
         (if match
             (values match rest)
             (_match-any (cdr matchers) tokens)))))
-
-(define (_match-all matchers tokens)
-  ...)
 
 ;;; --- matchers ---
 

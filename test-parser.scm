@@ -1,7 +1,7 @@
 ;; test-parser.scm
 
 (push! *load-path* ".")
-(load "parser")
+(use parser)
 (use gauche.test)
 
 (test-start "parser")
