@@ -58,7 +58,14 @@ a ".".)
 (define *literals* '(integer float string identifier symbol))
 
 (define (_match-zero-or-more matcher tokens)
-  ...)
+  (let loop ((tokens-left tokens) (matched '()))
+    (if (null? tokens-left)
+        (values (reverse matched) tokens-left)
+        (receive (match rest)
+            (matcher tokens-left)
+          (if match
+              (loop rest (cons match matched))
+              (values (reverse matched) tokens-left))))))
 
 (define (_match-any matchers tokens)
   (if (null? matchers)

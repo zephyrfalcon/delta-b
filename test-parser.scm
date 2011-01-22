@@ -18,6 +18,16 @@
   (test* "" '(literal . (integer 4)) matched)
   (test* "" (cdr t1) rest))
 
+(test-section "_match-zero-or-more")
+(receive (matched rest)
+    (_match-zero-or-more match-literal t1)
+  (test* "" '((literal integer 4)) matched)
+  (test* "" (cdr t1) rest))
+(receive (matched rest)
+    (_match-zero-or-more match-literal (cddr t2))
+  (test* "" '((literal integer 1) (literal integer 2) (literal integer 3))
+         matched))
+
 (test-section "match-method-call")
 
 (receive (matched rest)
