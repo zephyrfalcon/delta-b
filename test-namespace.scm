@@ -40,7 +40,6 @@
     (test* "" 1 (namespace-get ns "foo"))
     )
 
-  
 )
 
 
