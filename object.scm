@@ -4,6 +4,8 @@
   (export-all))
 (select-module object)
 
+(use gauche.record)
+
 (define-record-type delta-object #t #t
   protos   ;; a list of protos
   data     ;; data for (partially) built-in objects; default #f 

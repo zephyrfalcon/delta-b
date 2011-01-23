@@ -3,12 +3,13 @@
 (push! *load-path* ".")
 (use tokenizer)
 (use parser)
+(use interpreter)
 
 (define *delta-version* "Delta/B 0.1")
 (define *welcome-msg* (format "Welcome to Delta ~a." *delta-version*))
 (define *prompt* ">> ")
 
-(define (mainloop)
+(define (mainloop interp)
   (display *prompt*)
   (flush)
   (let ((line (read-line)))
@@ -16,9 +17,10 @@
         (print "Doegieeee!")
         (begin
           (print "Aha, you want to evaluate: " line)
-          (mainloop)))))
+          (mainloop interp)))))
 
 (define (main args)
-  (print *welcome-msg*)
-  (mainloop))
+  (let ((interp (new-interpreter)))
+    (print *welcome-msg*)
+    (mainloop interp)))
 
