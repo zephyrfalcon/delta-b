@@ -24,6 +24,8 @@
        (tokenize "~ bar:."))
 (test* "" '((lbrace "{") (integer 3) (rbrace "}"))
        (tokenize "{ 3 }"))
+(test* "" '((lbrace "{") (integer 3) (rbrace "}") (dot "."))
+       (tokenize "{ 3 }."))
 
 (define s1 "4. -- this is a comment")
 (test* "" '((integer 4) (dot ".")) (tokenize s1))

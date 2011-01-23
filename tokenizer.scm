@@ -20,12 +20,12 @@
 (define re-symbol
   (string->regexp (string-append "^#" (string-drop (regexp->string re-id) 1))))
 
-(define re-dot #/\./)
-(define re-lparen #/\(/)
-(define re-rparen #/\)/)
-(define re-lbrace #/\{/)
-(define re-rbrace #/\}/)
-(define re-whitespace #/\s+/)
+(define re-dot #/^\./)
+(define re-lparen #/^\(/)
+(define re-rparen #/^\)/)
+(define re-lbrace #/^\{/)
+(define re-rbrace #/^\}/)
+(define re-whitespace #/^\s+/)
 
 ;;; --- matching procedures ---
 
@@ -85,6 +85,7 @@
         match-rbrace))
 
 (define (find-next-token s)
+
   (let loop ((matchers *matchers*))
     (if (null? matchers)
         (error "Invalid syntax: " s)
