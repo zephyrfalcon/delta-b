@@ -9,3 +9,6 @@
     (for-each (lambda (x) (hash-table-put! hash x #t))
               lst)
     (hash-table-keys hash)))
+
+(define (printf str . args)
+  (display (apply format (cons str args))))

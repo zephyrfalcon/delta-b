@@ -1,0 +1,14 @@
+# TODO
+
+--- PARSER
+
+- Needs more tests. "3 plus: 4" at REPL fails, for example. (But for
+  some reason the same code works fine in test-parser.scm...??)  [A
+  regex was fixed, but this part still doesn't work.]
+
+- Empty statements should be allowed (i.e., a single dot).
+
+--- TESTS
+
+- We need a way to run all tests (and show results properly). See the
+  Gauche manual.

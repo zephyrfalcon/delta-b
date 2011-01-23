@@ -40,6 +40,7 @@
   (make-ast-node 'block stmts))
 (define (ast-block? node)
   (equal? (car node) 'block))
+(define ast-block-statements cdr)
 
 ;; method calls
 ;; represented as: (method-call . (<method> . <args>*))

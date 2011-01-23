@@ -75,7 +75,9 @@
 (receive (matched rest)
     (match-statement t1)
   (test* "" #t (ast-method-call-chain? matched))
-  ;; XXX add more tests here using accessors...
+  (test* "" '(literal integer 4) (ast-method-call-chain-head matched))
+  (test* "" '((method-call "plus:" (literal integer 5)))
+         (ast-method-call-chain-calls matched))
   (test* "" '() rest))
 
 ;;;
@@ -90,6 +92,17 @@
 (test-section "match-block")
 (receive (matched rest)
     (match-block t5)
+  (test* "number of stmts in block"
+         3 (length (ast-block-statements matched)))
   (test* "" '() rest))
+
+;;;
+(test-section "match-program")
+(let ((stmts (match-program t1)))
+  (test* "number of statements" 1 (length stmts))
+  (test* "first stmt is method call chain?"
+         #t (ast-method-call-chain? (car stmts)))
+  )
+
 
 (test-end)
