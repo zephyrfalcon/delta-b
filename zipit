@@ -1,0 +1,8 @@
+#!/bin/sh
+# Clunky script to create a .tar.gz file of the git repository.
+# Possibly brittle.
+
+DELTA_VERSION=`awk '/define \*delta-version/ { print substr($3, 2, length($3)-3) }' delta.scm`
+echo $DELTA_VERSION
+tar -cvz --file=../delta-gauche-${DELTA_VERSION}.tar.gz ../delta-gauche/
+
