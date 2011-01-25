@@ -45,7 +45,7 @@
 (define match-string
   (make-regex-matcher re-string 'string identity)) ;; FIXME
 (define match-method-call
-  (make-regex-matcher re-method-call 'method-call identity))
+  (make-regex-matcher re-method-call 'method-call-name identity))
 (define match-identifier
   (make-regex-matcher re-id 'identifier identity))
 (define match-symbol

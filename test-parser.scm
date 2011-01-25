@@ -1,7 +1,9 @@
 ;; test-parser.scm
 
 (push! *load-path* ".")
+(use tokenizer)
 (use parser)
+(use tools)
 (use gauche.test)
 
 (test-start "parser")
@@ -15,6 +17,8 @@
              (integer 5) (rparen ")")))
 (define t5 (cons '(lbrace "{")
                  (append t1 t2 t3 '((rbrace "}")))))
+
+(define t6 (tokenize "3 plus: 4."))
 
 ;;;
 (test-section "match-literal")
@@ -99,6 +103,11 @@
 ;;;
 (test-section "match-program")
 (let ((stmts (match-program t1)))
+  (test* "number of statements" 1 (length stmts))
+  (test* "first stmt is method call chain?"
+         #t (ast-method-call-chain? (car stmts)))
+  )
+(let ((stmts (match-program t6)))
   (test* "number of statements" 1 (length stmts))
   (test* "first stmt is method call chain?"
          #t (ast-method-call-chain? (car stmts)))
