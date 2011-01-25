@@ -11,17 +11,36 @@
 (use pretty)
 (use tools)
 
+(use builtin.object)
+(use builtin.string)
+(use builtin.integer)
+
 (define-record-type interpreter #t #t
-  toplevel-ns
+  builtin-ns    ;; contains protos
+  toplevel-ns   ;; user space
   )
 
 (define (new-interpreter)
-  (let ((interp (make-interpreter (make-namespace #t))))
-    (init-interpreter interp)
-    interp))
+  (let* ((builtin-ns (make-namespace #f))
+         (toplevel-ns (make-namespace builtin-ns)))
+    (let ((interp (make-interpreter builtin-ns toplevel-ns)))
+      (init-interpreter interp)
+      interp)))
 
 (define (init-interpreter interp)
+  (add-protos interp)
   interp)
+
+(define (add-protos interp)
+  (let ((ns (interpreter-builtin-ns interp)))
+    (namespace-set! ns "Object" (make-object-proto interp))
+    (namespace-set! ns "Integer" (make-integer-proto interp))
+    (namespace-set! ns "String" (make-string-proto interp))
+    interp))
+
+(define (find-builtin-proto interp name)
+  (let ((ns (interpreter-builtin-ns interp)))
+    (namespace-get ns name)))
 
 (define (delta-eval s)
   (let* ((tokens (tokenize s))

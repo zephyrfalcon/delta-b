@@ -1,10 +1,27 @@
 # TODO
 
---- PARSER
+[NOTES]
 
-- Needs more tests. "3 plus: 4" at REPL fails, for example. (But for
-  some reason the same code works fine in test-parser.scm...??)  [A
-  regex was fixed, but this part still doesn't work.]
+- All built-in methods must take an interpreter instance as their
+  first argument. Possibly others as well.
+
+--- CODE ORGANIZATION
+
+- Sigh, since many objects are mutually recursive, we run into module
+  problems. The best way is probably to just abandon them altogether
+  and use a massive "load" wherever necessary. =/
+
+  In this case, builtin/integer.scm uses interpreter.scm; in fact, all
+  builtin proto modules do, because they need to look up protos and to
+  do that they need to inspect the interpreter object/record. But,
+  interpreter.scm needs to build a list of protos, so it imports
+  builtin/integer.scm and friends. Much hilarity ensues. :(
+
+  It's also completely unnecessary, because at load/import time, none
+  of the modules use code that uses the other; this is deferred until
+  runtime.
+
+--- PARSER
 
 - Empty statements should be allowed (i.e., a single dot).
 
@@ -12,3 +29,14 @@
 
 - We need a way to run all tests (and show results properly). See the
   Gauche manual.
+
+--- OBJECTS
+
+- The following idiom seems common:
+
+  (let ((bns (interpreter-builtin-ns interp))
+        (int-proto (namespace-get bns "Integer"))
+        (obj (clone-object int-proto :data n)))
+
+  We should probably add a helper function FIND-PROTO or something.
+  The builtin protos have their own namespace, so they should be easy to find.

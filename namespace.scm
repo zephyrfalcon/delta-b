@@ -36,7 +36,7 @@
 ;; and replaced, #f otherwise.
 (define (namespace-update! ns name value)
   (receive (old-value in-ns)
-      (namespace-get ns name)
+'      (namespace-get ns name)
     (if old-value
         (begin
           (namespace-set! in-ns name value)
