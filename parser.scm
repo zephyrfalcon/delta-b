@@ -145,7 +145,8 @@ or a statement enclosed in parentheses.
         ;; match zero or more method calls
         (receive (method-calls rest-2)
             (_match-zero-or-more match-method-call rest-1)
-          (values (make-ast-method-call-chain head method-calls)
+          (values (normalize-method-call-chain
+                   (make-ast-method-call-chain head method-calls))
                   rest-2))
         (values #f #f))))
 
@@ -179,3 +180,11 @@ or a statement enclosed in parentheses.
                 (values #f #f))
             (values #f #f)))
       (values #f #f)))
+
+;; If a method call chain consists of only a head (and no actual
+;; method calls on that head), replace it with just the head.
+(define (normalize-method-call-chain mcc)
+  (if (and (ast-method-call-chain? mcc)
+           (equal? (cddr mcc) '()))
+      (cadr mcc)
+      mcc))

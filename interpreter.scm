@@ -38,8 +38,22 @@
   (let ((ns (interpreter-builtin-ns interp)))
     (namespace-get ns name)))
 
-(define (delta-eval s)
+;; Tokenize, parse and evaluate the Delta code in the given string.
+(define (delta-eval-string s)
   (let* ((tokens (tokenize s))
          (_ (printf "[tokens] ~s~%" tokens))
          (stmts (match-program tokens)))
     (for-each pretty-print stmts)))
+
+;; Evaluate the Delta expression EXPR (an AST object) in namespace NS.
+(define (delta-eval expr ns interp)
+  (cond ((ast-literal? expr)
+         ...)
+        ((ast-identifier? expr)
+         ...)
+        ((ast-block? expr)
+         ...)
+        ((ast-method-call-chain? expr)
+         ...)
+        (else (error "Unknown AST node type:" expr))))
+
