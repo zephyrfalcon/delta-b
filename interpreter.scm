@@ -51,7 +51,10 @@
          (set! result
                (delta-eval expr (interpreter-toplevel-ns interp) interp)))
          stmts)
-      (printf "~s~%" result))))
+      (when result
+        (printf "~s~%" (delta-object-repr result))))))
+;; FIXME: printing should be done by the caller
+;; and we should probably pass _all_ of the results, not just the last...
 
 ;; Evaluate the Delta expression EXPR (an AST object) in namespace NS.
 (define (delta-eval expr ns interp)

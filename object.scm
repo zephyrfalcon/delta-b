@@ -10,6 +10,17 @@
   (slots)    ;; a hash table
   )
 
+;; Printable representation of a DELTA-OBJECT record. Mostly for
+;; testing purposes.
+;; XXX maybe there's a standard way to do this? Chicken has one...
+(define (delta-object-repr obj)
+  (format "#(delta-object :protos ~s :data ~s :type-tag ~s :id ~s :slots ~s)"
+          (delta-object-protos obj)
+          (delta-object-data obj)
+          (delta-object-type-tag obj)
+          (delta-object-id obj)
+          (hash-table-keys (delta-object-slots obj))))
+
 (define (new-delta-object :key (data #f) (type-tag 'none))
   (make-delta-object '() data type-tag 0 (make-hash-table 'string=?)))
 
