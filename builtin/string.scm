@@ -1,12 +1,6 @@
 ;; builtin/string.scm
 
-(define-module builtin.string
-  (export make-string-proto))
-(select-module builtin.string)
-
-(use object)
-
-(define (make-string-proto)
+(define (make-string-proto interp)
   (let ((obj (new-delta-object :data "" :type-tag 'string)))
     ;; XXX add stuff here...
     obj))

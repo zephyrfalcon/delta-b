@@ -1,9 +1,5 @@
 ;; interpreter.scm
 
-(define-module interpreter
-  (export-all))
-(select-module interpreter)
-
 (use gauche.record)
 (use namespace)
 (use tokenizer)
@@ -11,9 +7,9 @@
 (use pretty)
 (use tools)
 
-(use builtin.object)
-(use builtin.string)
-(use builtin.integer)
+(load "builtin/object")
+(load "builtin/string")
+(load "builtin/integer")
 
 (define-record-type interpreter #t #t
   builtin-ns    ;; contains protos

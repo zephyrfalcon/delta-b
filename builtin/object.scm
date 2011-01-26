@@ -1,11 +1,5 @@
 ;; builtin/object.scm
 
-(define-module builtin.object
-  (export make-object-proto))
-(select-module builtin.object)
-
-(use object)
-
 (define (make-object-proto interp)
   (let ((obj (new-delta-object)))
     ;; XXX add stuff here...

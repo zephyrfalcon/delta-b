@@ -4,8 +4,9 @@
 (push! *load-path* ".")
 (use tokenizer)
 (use parser)
-(use interpreter)
 (use tools)
+(load "interpreter")
+(load "object")
 
 (define *delta-version* "0.1.1")
 (define *welcome-msg* (format "Welcome to Delta/B ~a." *delta-version*))

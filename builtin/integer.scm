@@ -1,18 +1,11 @@
 ;; builtin/integer.scm
 
-(define-module builtin.integer
-  (export make-integer-proto new-integer-object))
-(select-module builtin.integer)
-
-(use object)
-(use interpreter)
-
 (define (make-integer-proto interp)
   (let* ((bns (interpreter-builtin-ns interp))
          (obj-proto (namespace-get bns "Object"))
          (int-proto (clone-object obj-proto)))
     (delta-object-data-set! int-proto 0)
-    (delta-object-type-tag-set! 'integer)
+    (delta-object-type-tag-set! int-proto 'integer)
     ;; XXX add stuff here...
     int-proto))
 
