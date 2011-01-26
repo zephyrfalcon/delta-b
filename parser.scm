@@ -56,7 +56,7 @@ or a statement enclosed in parentheses.
 |#
 
 (use srfi-1)
-(load "ast") ;; for now; turn into module later
+(load "ast") 
 
 (define *literals* '(integer float string identifier symbol))
 

@@ -20,7 +20,7 @@
         (print "Doegieeee!")
         (begin
           (printf "Aha, you want to evaluate: ~s~%" line)
-          (delta-eval-string (string-append line "."))
+          (delta-eval-string (string-append line ".") interp)
           (mainloop interp)))))
 
 (define (main args)

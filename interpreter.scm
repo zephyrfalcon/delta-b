@@ -1,5 +1,6 @@
 ;; interpreter.scm
 
+(use srfi-1)
 (use gauche.record)
 (use namespace)
 (use tokenizer)
@@ -39,18 +40,29 @@
     (namespace-get ns name)))
 
 ;; Tokenize, parse and evaluate the Delta code in the given string.
-(define (delta-eval-string s)
+(define (delta-eval-string s interp)
   (let* ((tokens (tokenize s))
          (_ (printf "[tokens] ~s~%" tokens))
          (stmts (match-program tokens)))
-    (for-each pretty-print stmts)))
+    (pretty-print stmts)
+    (let ((result #f))
+      (for-each
+       (lambda (expr)
+         (set! result
+               (delta-eval expr (interpreter-toplevel-ns interp) interp)))
+         stmts)
+      (printf "~s~%" result))))
 
 ;; Evaluate the Delta expression EXPR (an AST object) in namespace NS.
 (define (delta-eval expr ns interp)
   (cond ((ast-literal? expr)
-         ...)
-        ((ast-identifier? expr)
-         ...)
+         (case (second expr)
+           ((integer) (new-integer-object interp (third expr)))
+           ((float) ...)
+           ((string) ...)
+           ((symbol) ...)
+           ((identifier) ...)
+           (else ...)))
         ((ast-block? expr)
          ...)
         ((ast-method-call-chain? expr)

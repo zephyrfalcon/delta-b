@@ -11,8 +11,8 @@
 
 ;; create a new Delta Integer object from a Scheme integer.
 (define (new-integer-object interp n)
-  (let ((int-proto (find-builtin-proto interp "Integer"))
-        (obj (clone-object int-proto :data n)))
+  (let* ((int-proto (find-builtin-proto interp "Integer"))
+         (obj (clone-object int-proto :data n)))
     obj))
 
 ;;; --- methods ---
