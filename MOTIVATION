@@ -1,0 +1,13 @@
+# MOTIVATION
+
+An interpreted language written in another interpreted language is not
+going to be a speed monster. In fact, it will probably be unsuitable
+for most common tasks.
+
+Then why write it? Because I have been toying with language ideas and
+experiments for years. Maybe it's time that I take some of those ideas
+and write a working implementation, and push it to its limits. If
+nothing else, it will be a great learning experience. And if the
+language itself holds up, or even parts of it, then those parts can be
+transferred to a more serious implementation (with a VM, GC, etc).
+
