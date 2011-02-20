@@ -1,0 +1,10 @@
+Naming conventions
+
+Internal:
+
+- Built-in protos are indicated with a simple lowercase identifier,
+  e.g. 'string', 'bmethod', etc. The proto for an identifier FOO is
+  found in builtin/FOO.scm. The "constructor" for a proto is
+  make-FOO. The constructor for a clone/instance is
+  new-FOO-object. The internal method definitions follow the naming
+  scheme m-FOO-methodname (e.g. m-string-length).
