@@ -11,6 +11,7 @@
 (load "builtin/object")
 (load "builtin/string")
 (load "builtin/integer")
+(load "builtin/bmethod")
 
 (define-record-type interpreter #t #t
   builtin-ns    ;; contains protos
@@ -33,6 +34,7 @@
     (namespace-set! ns "Object" (make-object-proto interp))
     (namespace-set! ns "Integer" (make-integer-proto interp))
     (namespace-set! ns "String" (make-string-proto interp))
+    (namespace-set! ns "BuiltinMethod" (make-bmethod-proto interp))
     interp))
 
 (define (find-builtin-proto interp name)

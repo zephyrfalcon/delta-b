@@ -4,5 +4,5 @@
 
 DELTA_VERSION=`awk '/define \*delta-version/ { print substr($3, 2, length($3)-3) }' delta.scm`
 echo $DELTA_VERSION
-tar -cvz --file=../delta-gauche-${DELTA_VERSION}.tar.gz ../delta-gauche/
+tar -cvz --file=../delta-b-${DELTA_VERSION}.tar.gz ../delta-b/
 

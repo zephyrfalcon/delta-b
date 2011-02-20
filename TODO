@@ -2,8 +2,12 @@
 
 [NOTES]
 
-- All built-in methods must take an interpreter instance as their
-  first argument. Possibly others as well.
+- All built-in methods must have the following signature:
+  (obj args ns interp)
+  where obj is the object the method is called on,
+  args is a list of arguments passed to the method,
+  ns is the namespace it is called in,
+  and interp is the interpreter object being used.
 
 --- CODE ORGANIZATION
 
@@ -20,6 +24,10 @@
   It's also completely unnecessary, because at load/import time, none
   of the modules use code that uses the other; this is deferred until
   runtime.
+
+- The various functions for making built-in protos look much the same,
+  we can probably write a factory function for this, or maybe a macro
+  if necessary.
 
 --- PARSER
 
