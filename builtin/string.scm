@@ -7,11 +7,11 @@
 
 ;;; --- methods ---
 
-(define (delta-string-length obj)
+(define (m-string-length obj args ns interp)
   (let* ((s (delta-object-data obj))
          (len (string-length s)))
-    (%new-delta-number len))) ;; FIXME
+    (new-integer-object interp len))) 
 
-(define *method-table*
-  (list (list "length" delta-string-length)
+(define *string-methods*
+  (list (list "length" m-string-length)
         ))

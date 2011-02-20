@@ -17,10 +17,10 @@
 
 (test* "" '((integer 1) (integer 2) (integer 3)) (tokenize "1 2 3"))
 (test* "" '((identifier "foo") (identifier "bar")) (tokenize "foo bar"))
-(test* "" '((integer 1) (method-call "plus:") (integer 2))
+(test* "" '((integer 1) (method-call-name "plus:") (integer 2))
        (tokenize "1 plus: 2"))
 (test* "" '((lparen "(") (identifier "a") (rparen ")")) (tokenize "(a)"))
-(test* "" '((identifier "~") (method-call "bar:") (dot "."))
+(test* "" '((identifier "~") (method-call-name "bar:") (dot "."))
        (tokenize "~ bar:."))
 (test* "" '((lbrace "{") (integer 3) (rbrace "}"))
        (tokenize "{ 3 }"))

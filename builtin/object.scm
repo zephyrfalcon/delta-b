@@ -7,11 +7,11 @@
 
 ;;; --- methods ---
 
-(define (_delta-object-id interp obj)
+(define (m-object-id obj args ns interp)
   (let* ((id (delta-object-id obj))
          (int-obj (make-integer-obj interp id)))
     int-obj))
 
-(define *method-table*
-  (list (list "id" _delta-object-id)
+(define *object-methods*
+  (list (list "id" m-object-id)
         ))

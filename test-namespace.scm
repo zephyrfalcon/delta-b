@@ -20,24 +20,24 @@
   (let ((ns2 (make-namespace ns)))
     (namespace-set! ns2 "foo" 3)
     (namespace-set! ns2 "baz" 4)
-    (test* "" 3 (namespace-get ns2 "foo"))
-    (test* "" 2 (namespace-get ns2 "bar"))
-    (test* "" 4 (namespace-get ns2 "baz"))
+    (test* "ns2.foo is 2" 3 (namespace-get ns2 "foo"))
+    (test* "ns2.bar is 2" 2 (namespace-get ns2 "bar"))
+    (test* "ns2.baz is 4" 4 (namespace-get ns2 "baz"))
 
     ;; "foo" can be found in ns2
     (receive (value origin)
         (namespace-get ns2 "foo")
-      (test* "" #t (eq? ns2 origin)))
+      (test* "origin namespace is ns2" #t (eq? ns2 origin)))
     ;; "bar" is found in ns
     (receive (value origin)
         (namespace-get ns2 "bar")
-      (test* "" #t (eq? ns origin)))
+      (test* "origin namespace is ns" #t (eq? ns origin)))
 
     (namespace-update! ns2 "foo" 5)
     (namespace-update! ns2 "bar" 6)
-    (test* "" 6 (namespace-get ns "bar"))
-    (test* "" 5 (namespace-get ns2 "foo"))
-    (test* "" 1 (namespace-get ns "foo"))
+    (test* "ns.bar is 6" 6 (namespace-get ns "bar"))
+    (test* "ns2.foo is 5" 5 (namespace-get ns2 "foo"))
+    (test* "ns.foo is 1" 1 (namespace-get ns "foo"))
     )
 
 )

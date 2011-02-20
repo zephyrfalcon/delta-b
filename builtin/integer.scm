@@ -17,3 +17,4 @@
 
 ;;; --- methods ---
 
+(define *integer-methods* '())
