@@ -1,0 +1,42 @@
+Delta is a programming language. Or rather, it will be, someday,
+hopefully. Maybe. :)
+
+I have a bunch of ideas for a language that I want to try out and
+experiment with. There have been various incarnations before
+(unreleased); what they all had in common was that they were
+prototype-based and often had weird syntax. :) I went through several
+names, eventually settling on the name Delta (for now). The name is a
+reference to differential inheritance, as used by Io.
+
+The first version of Delta was written in Chicken Scheme. Since
+Chicken is a compiler, I had a "clever" idea: the Delta parser would
+represent a program's AST as an S-expression, which could then
+literally be eval-uated by Chicken. Also, since the AST would
+essentially be valid Scheme code, it could be compiled to an
+executable. ... The results were mixed; the idea worked, but the
+language was super slow, even compiled. I refer to this version as
+Delta/A.
+
+I am now working on Delta/B. I made some changes to the object
+model. This version will be written in Gauche Scheme [*1]. Performance
+is unimportant at this point. I am more interested in getting a
+(sub)system to work, and fleshing out the object model, and actually
+get to the point where I can start experimenting, and try out some
+ideas.
+
+The syntax is still hairy (but I am designing a much cleaner/clearer
+syntax for Delta/C).
+
+[TODO: explain syntax and grammar]
+
+[Also TODO: explain how to start up the interpreter... once it
+actually works, that is :-)]
+
+~
+
+[*1] Gauche is highly underrated, by the way. In an informal
+benchmark, it was *much* faster than Chicken, Gambit, Scheme48 or
+Racket, even though it's an interpreter, and some of these other guys
+are compilers. I noticed this before, when it processed SXML much
+faster than *compiled* Chicken code.
+
