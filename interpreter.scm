@@ -8,6 +8,7 @@
 (use pretty)
 (use tools)
 
+(load "proto-tools")
 (load "builtin/object")
 (load "builtin/string")
 (load "builtin/integer")
@@ -64,7 +65,7 @@
          (case (second expr)
            ((integer) (new-integer-object interp (third expr)))
            ((float) ...)
-           ((string) ...)
+           ((string) (new-string-object interp (third expr)))
            ((symbol) ...)
            ((identifier) ...)
            (else ...)))

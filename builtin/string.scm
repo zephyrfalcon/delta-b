@@ -1,12 +1,12 @@
 ;; builtin/string.scm
 
-(define (make-string-proto interp)
-  (let ((obj (new-delta-object :data "" :type-tag 'string)))
-    ;; XXX add stuff here...
-    obj))
+(define make-string-proto
+  (make-proto-maker 'string :default ""))
 
 (define (new-string-object interp s)
-  ...)
+  (let* ((string-proto (find-builtin-proto interp "String"))
+         (obj (clone-object string-proto :data s)))
+    obj))
 
 ;;; --- methods ---
 
