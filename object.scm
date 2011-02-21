@@ -31,3 +31,7 @@
     (delta-object-data-set! new-obj (or data (delta-object-data obj)))
     (delta-object-type-tag-set! new-obj (delta-object-type-tag obj))
     new-obj))
+
+(define (delta-object-add-slot! obj slot-name value)
+  (let ((slots (delta-object-slots obj)))
+    (hash-table-put! slots slot-name value)))

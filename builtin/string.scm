@@ -1,7 +1,5 @@
 ;; builtin/string.scm
-
-(define make-string-proto
-  (make-proto-maker 'string :default ""))
+;; String proto.
 
 (define (new-string-object interp s)
   (let* ((string-proto (find-builtin-proto interp "String"))
@@ -22,4 +20,10 @@
 
 (define *string-methods*
   (list (list "length" m-string-length)
+        (list "repr" m-string-repr)
         ))
+
+;;; --- String prototype ---
+
+(define make-string-proto
+  (make-proto-maker 'string *string-methods* :default ""))
