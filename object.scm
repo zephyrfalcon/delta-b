@@ -35,3 +35,27 @@
 (define (delta-object-add-slot! obj slot-name value)
   (let ((slots (delta-object-slots obj)))
     (hash-table-put! slots slot-name value)))
+
+(define (delta-object-append-proto! obj proto)
+  ...)
+
+(define (delta-object-prepend-proto! obj proto)
+  ...)
+
+(define (delta-object-get-slot obj slot-name)
+  (let ((value (hash-table-get (delta-object-slots obj) slot-name #f)))
+    (if value
+        (values value obj) ;; the value, and the object containing it
+        (values #f #f))))  ;; FIXME: look up in protos, if any
+
+(define (delta-object-mro obj)
+  ...)
+
+(define (delta-object-update-slot! obj slot-name value)
+  ...)
+
+(define (delta-object-slotnames obj)
+  ...)
+
+(define (delta-object-all-slotnames obj)
+  ...)
