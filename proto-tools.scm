@@ -3,11 +3,14 @@
 (define (make-proto-maker type-tag methods :key (default #f) (parent "Object"))
   (lambda (interp)
     (let* ((bns (interpreter-builtin-ns interp))
-           (obj-proto (namespace-get bns parent))
-           (this-proto (clone-object obj-proto)))
+           (obj-proto (if parent (namespace-get bns parent) #f))
+           (this-proto (if parent
+                           (clone-object obj-proto)
+                           (new-delta-object))))
 
       ;; add value and type tag
-      (delta-object-data-set! this-proto default)
+      (when parent
+        (delta-object-data-set! this-proto default))
       (delta-object-type-tag-set! this-proto type-tag)
 
       ;; add methods
