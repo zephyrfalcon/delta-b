@@ -46,7 +46,15 @@
   (let ((value (hash-table-get (delta-object-slots obj) slot-name #f)))
     (if value
         (values value obj) ;; the value, and the object containing it
-        (values #f #f))))  ;; FIXME: look up in protos, if any
+        (call/cc (lambda (return)
+                   (for-each
+                    (lambda (proto)
+                      (receive (value the-obj)
+                          (delta-object-get-slot proto slot-name)
+                        (when value
+                          (return value the-obj))))
+                    (delta-object-protos obj))
+                   (return #f #f))))))
 
 (define (delta-object-mro obj)
   ...)
