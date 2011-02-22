@@ -30,12 +30,22 @@
   (add-protos interp)
   interp)
 
+(define *protos*
+  `(("Object"        ,make-object-proto)
+    ("Integer"       ,make-integer-proto)
+    ("String"        ,make-string-proto)
+    ("BuiltinMethod" ,make-bmethod-proto)))
+
 (define (add-protos interp)
   (let ((ns (interpreter-builtin-ns interp)))
-    (namespace-set! ns "Object" (make-object-proto interp))
-    (namespace-set! ns "Integer" (make-integer-proto interp))
-    (namespace-set! ns "String" (make-string-proto interp))
-    (namespace-set! ns "BuiltinMethod" (make-bmethod-proto interp))
+    ;;(namespace-set! ns "Object" (make-object-proto interp))
+    ;;(namespace-set! ns "Integer" (make-integer-proto interp))
+    ;;(namespace-set! ns "String" (make-string-proto interp))
+    ;;(namespace-set! ns "BuiltinMethod" (make-bmethod-proto interp))
+    (for-each-pair
+     (lambda (name proto-constructor)
+       (namespace-set! ns name (proto-constructor interp)))
+     *protos*)
     interp))
 
 (define (find-builtin-proto interp name)

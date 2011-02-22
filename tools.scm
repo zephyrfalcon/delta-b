@@ -12,3 +12,9 @@
 
 (define (printf str . args)
   (display (apply format (cons str args))))
+
+(define (for-each-pair f lst)
+  (for-each
+   (lambda (x)
+     (f (car x) (cadr x)))
+   lst))
