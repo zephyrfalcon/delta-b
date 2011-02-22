@@ -1,5 +1,7 @@
 ;; ast.scm
 
+(use srfi-13)
+
 ;; AST nodes are represented as pairs. The CAR is the symbol that
 ;; indicates the type of node; the CDR is its value.
 
@@ -48,7 +50,8 @@
 ;; <args>* is a list of zero or more arguments (all AST nodes).
 
 (define (make-ast-method-call method args)
-  (make-ast-node 'method-call (cons method args)))
+  (make-ast-node 'method-call
+                 (cons (string-trim-right method #\:) args)))
 (define (ast-method-call? node)
   (equal? (car node) 'method-call))
 (define (ast-method-call-method node)

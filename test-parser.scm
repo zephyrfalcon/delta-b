@@ -43,18 +43,18 @@
 
 (receive (matched rest)
     (match-method-call (cdr t1))
-  (test* "" '(method-call . ("plus:" . ((literal . (integer 5))))) matched)
+  (test* "" '(method-call . ("plus" . ((literal . (integer 5))))) matched)
   (test* "" '((dot ".")) rest))
 
 (receive (matched rest)
     (match-method-call (cdr t2))
-  (test* "" '(method-call . ("new:" (literal integer 1)
+  (test* "" '(method-call . ("new" (literal integer 1)
                              (literal integer 2) (literal integer 3)))
          matched))
 
 (receive (matched rest)
     (match-method-call (cdr t3))
-  (test* "" '(method-call . ("println:" . ())) matched))
+  (test* "" '(method-call . ("println" . ())) matched))
 
 ;;;
 ;; XXX use accessors to make it more clear what is matched
@@ -63,7 +63,7 @@
     (match-method-call-chain t1)
   (test* "" '(method-call-chain
               . ((literal integer 4)
-                 . ((method-call . ("plus:" (literal integer 5))))))
+                 . ((method-call . ("plus" (literal integer 5))))))
          matched)
   (test* "" '((dot ".")) rest))
 
@@ -80,7 +80,7 @@
     (match-statement t1)
   (test* "" #t (ast-method-call-chain? matched))
   (test* "" '(literal integer 4) (ast-method-call-chain-head matched))
-  (test* "" '((method-call "plus:" (literal integer 5)))
+  (test* "" '((method-call "plus" (literal integer 5)))
          (ast-method-call-chain-calls matched))
   (test* "" '() rest))
 
