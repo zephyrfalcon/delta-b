@@ -82,6 +82,33 @@
         ((ast-block? expr)
          ...)
         ((ast-method-call-chain? expr)
-         ...)
+         (delta-eval-mcc expr ns interp))
         (else (error "Unknown AST node type:" expr))))
 
+;; Evaluate a method call chain.
+(define (delta-eval-mcc mcc ns interp)
+  (let ((head (ast-method-call-chain-head mcc))
+        (calls (ast-method-call-chain-calls mcc)))
+    (let* ((target (delta-eval head ns interp))
+           (result target))
+      (for-each (lambda (mc)
+                  (let ((method-name (ast-method-call-method mc))
+                        (args (ast-method-call-args mc)))
+                    (let ((value (delta-eval-method-call result
+                                                         method-name args
+                                                         ns interp)))
+                      (set! result value))))
+                calls)
+      result)))
+
+;; XXX for now, assumes it's a built-in method, i.e. we get an
+;; instance of BuiltinMethod with an actual built-in Scheme function
+;; associated with it. add other possibilities later.
+;; maybe add a general mechanism that looks for a 'call' method...
+(define (delta-eval-method-call target method-name ast-args ns interp)
+  (let ((method (delta-object-get-slot target method-name)))
+    (if method
+        (let ((f (delta-object-data method))
+              (evaled-args (map (^a (delta-eval a ns interp)) ast-args)))
+          (f target evaled-args ns interp))
+        (error "Unknown method:" method-name))))
