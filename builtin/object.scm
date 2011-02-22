@@ -1,10 +1,5 @@
 ;; builtin/object.scm
 
-(define (make-object-proto interp)
-  (let ((obj (new-delta-object)))
-    ;; XXX add stuff here...
-    obj))
-
 ;;; --- methods ---
 
 (define (m-object-id obj args ns interp)
@@ -15,3 +10,8 @@
 (define *object-methods*
   (list (list "id" m-object-id)
         ))
+
+;;; --- Object prototype ---
+
+(define make-object-proto
+  (make-proto-maker #f *object-methods* :parent #f))
