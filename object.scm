@@ -4,7 +4,7 @@
 
 (define-record-type delta-object #t #t
   (protos)   ;; a list of protos
-  (data)     ;; data for (partially) built-in objects; default #f 
+  (data)     ;; data for (partially) built-in objects; default #f
   (type-tag) ;; indicates type of built-in objects; for internal use
   (id)       ;; integer
   (slots)    ;; a hash table
@@ -55,15 +55,15 @@
   (let ((value (hash-table-get (delta-object-slots obj) slot-name #f)))
     (if value
         (values value obj) ;; the value, and the object containing it
-        (call/cc (lambda (return)
-                   (for-each
-                    (lambda (proto)
-                      (receive (value the-obj)
-                          (delta-object-get-slot proto slot-name)
-                        (when value
-                          (return value the-obj))))
-                    (delta-object-protos obj))
-                   (return #f #f))))))
+        (let/cc return
+                (for-each
+                 (lambda (proto)
+                   (receive (value the-obj)
+                       (delta-object-get-slot proto slot-name)
+                     (when value
+                       (return value the-obj))))
+                 (delta-object-protos obj))
+                (return #f #f)))))
 
 (define (delta-object-mro obj)
   ...)
