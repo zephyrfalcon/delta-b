@@ -13,13 +13,14 @@
         (delta-object-data-set! this-proto default))
       (delta-object-type-tag-set! this-proto type-tag)
 
-      ;; add methods
-      (for-each
-       (lambda (pair)
-         (let ((method-name (first pair))
-               (method (second pair)))
-           (delta-object-add-slot! this-proto method-name method)))
-       methods)
+      ;; at this point we DON'T add methods yet, because they need to
+      ;; be wrapped in BuiltinMethod, which may not exist yet.
       
       this-proto)))
 
+(define (add-proto-methods-1 interp obj methods)
+  (for-each-pair
+   (lambda (method-name method)
+     (let ((mobj (new-bmethod-object interp method)))
+       (delta-object-add-slot! obj method-name mobj)))
+   methods))

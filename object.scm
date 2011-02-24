@@ -21,8 +21,17 @@
           (delta-object-id obj)
           (hash-table-keys (delta-object-slots obj))))
 
+;; Generate a new ID for a Delta object. Not thread-safe, but that
+;; doesn't matter right now. :-)
+(define generate-id
+  (let ((counter 0))
+    (lambda ()
+      (inc! counter)
+      counter)))
+
 (define (new-delta-object :key (data #f) (type-tag 'none))
-  (make-delta-object '() data type-tag 0 (make-hash-table 'string=?)))
+  (make-delta-object '() data type-tag (generate-id)
+                     (make-hash-table 'string=?)))
 
 ;; default cloning mechanism.
 (define (clone-object obj :key (data #f))
