@@ -4,7 +4,7 @@
 
 (define (m-object-id obj args ns interp)
   (let* ((id (delta-object-id obj))
-         (int-obj (make-integer-obj interp id)))
+         (int-obj (new-integer-object interp id)))
     int-obj))
 
 (define *object-methods*
