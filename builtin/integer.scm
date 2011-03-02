@@ -8,7 +8,14 @@
 
 ;;; --- methods ---
 
-(define *integer-methods* '())
+(define (m-integer-plus obj args ns interp)
+  (let ((sum (+ (delta-object-data obj)
+                (delta-object-data (car args)))))
+    (new-integer-object interp sum)))
+
+(define *integer-methods*
+  (list (list "plus" m-integer-plus)
+        ))
 
 ;;; --- Integer prototype ---
 
