@@ -13,13 +13,18 @@
          (len (string-length s)))
     (new-integer-object interp len)))
 
+;; XXX handle escape chars etc?
 (define (m-string-repr obj args ns interp)
   (let* ((s (delta-object-data obj))
          (repr (format "~s" s)))
     (new-string-object interp s)))
 
+(define (m-string-as-string obj args ns interp)
+  (new-string-object interp (delta-object-data obj)))
+
 (define *string-methods*
-  (list (list "length" m-string-length)
+  (list (list "as-string" m-string-as-string)
+        (list "length" m-string-length)
         (list "repr" m-string-repr)
         ))
 

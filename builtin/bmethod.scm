@@ -11,7 +11,13 @@
 
 ;;; --- methods ---
 
-(define *bmethod-methods* '())
+(define (m-bmethod-repr obj args ns interp)
+  (new-string-object "#<builtin-method>"))
+(define m-bmethod-as-string m-bmethod-repr)
+
+(define *bmethod-methods*
+  (list (list "as-string" m-bmethod-as-string)
+        (list "repr" m-bmethod-repr)))
 
 ;;; --- BuiltinMethod proto ---
 

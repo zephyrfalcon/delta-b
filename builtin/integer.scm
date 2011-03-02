@@ -13,8 +13,14 @@
                 (delta-object-data (car args)))))
     (new-integer-object interp sum)))
 
+(define (m-integer-as-string obj args ns interp)
+  (new-string-object interp (format "~s" (delta-object-data obj))))
+(define m-integer-repr m-integer-as-string)
+
 (define *integer-methods*
-  (list (list "plus" m-integer-plus)
+  (list (list "as-string" m-integer-as-string)
+        (list "plus" m-integer-plus)
+        (list "repr" m-integer-repr)
         ))
 
 ;;; --- Integer prototype ---
