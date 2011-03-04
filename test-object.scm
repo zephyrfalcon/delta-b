@@ -2,9 +2,9 @@
 
 (push! *load-path* ".")
 (use gauche.test)
-(load "object")
+(load "delta-object")
 
-(test-start "object")
+(test-start "delta-object")
 
 (let ((obj (new-delta-object)))
   (delta-object-add-slot! obj "foo" 42)

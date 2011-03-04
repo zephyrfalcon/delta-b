@@ -6,7 +6,7 @@
 (use parser)
 (use tools)
 (load "interpreter")
-(load "object")
+(load "delta-object")
 
 (define *delta-version* "0.1.3")
 (define *welcome-msg* (format "Welcome to Delta/B ~a." *delta-version*))
