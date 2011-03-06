@@ -48,3 +48,12 @@
 
   We should probably add a helper function FIND-PROTO or something.
   The builtin protos have their own namespace, so they should be easy to find.
+
+--- NEXT UP
+
+- Some obvious things we're going to need before the REPL is even
+  remotely useful:
+
+  - symbols
+  - lists
+  - name lookup
