@@ -11,6 +11,7 @@
 (define *delta-version* "0.1.3")
 (define *welcome-msg* (format "Welcome to Delta/B ~a." *delta-version*))
 (define *prompt* ">> ")
+(define *debug* #t)
 
 (define (mainloop interp)
   (display *prompt*)
@@ -19,7 +20,8 @@
     (if (eof-object? line)
         (print "Doegieeee!")
         (begin
-          (printf "Aha, you want to evaluate: ~s~%" line)
+          (when *debug*
+            (printf "Aha, you want to evaluate: ~s~%" line))
           (delta-eval-string (string-append line ".") interp)
           (mainloop interp)))))
 

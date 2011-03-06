@@ -60,9 +60,10 @@
 ;; Tokenize, parse and evaluate the Delta code in the given string.
 (define (delta-eval-string s interp)
   (let* ((tokens (tokenize s))
-         (_ (printf "[tokens] ~s~%" tokens))
+         (_ (when *debug* (printf "[tokens] ~s~%" tokens)))
          (stmts (match-program tokens)))
-    (pretty-print stmts)
+    (when *debug*
+      (pretty-print stmts))
     (let ((result #f))
       (for-each
        (lambda (expr)
