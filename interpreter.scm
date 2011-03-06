@@ -72,8 +72,7 @@
          (set! result (delta-eval expr ns interp)))
        stmts)
       result)))
-;; FIXME: printing should be done by the caller
-;; and we should probably pass _all_ of the results, not just the last...
+;; FIXME: we should probably pass _all_ of the results, not just the last...
 
 ;; Get the representation of a Delta object by calling its 'repr'
 ;; method. Returns a Delta object (presumably a String).
