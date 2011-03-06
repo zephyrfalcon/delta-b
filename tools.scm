@@ -22,6 +22,7 @@
 (define (assert x :optional (msg #f))
   (unless x (error (or msg "assertion failed"))))
 
+;; Pythonic string slicing function.
 (define (string-slice s idx1 :optional (idx2 #f))
   (let* ((sl (string-length s))
          (idx2 (or idx2 sl)) ;; defaults to length of string

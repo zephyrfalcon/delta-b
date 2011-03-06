@@ -49,6 +49,10 @@
   We should probably add a helper function FIND-PROTO or something.
   The builtin protos have their own namespace, so they should be easy to find.
 
+- Symbols should be cached. Much like in Scheme, two different
+  mentions of a symbol #foo should refer to the same object (and have
+  the same id). Maybe this cache should be in the interpreter object.
+
 --- NEXT UP
 
 - Some obvious things we're going to need before the REPL is even

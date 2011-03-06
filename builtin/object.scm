@@ -8,7 +8,7 @@
     int-obj))
 
 (define (m-object-repr obj args ns interp)
-  (new-string-object (delta-object-repr obj)))
+  (new-string-object interp (delta-object-repr obj)))
 (define m-object-as-string m-object-repr)
 
 (define (m-object-set-slot obj args ns interp)

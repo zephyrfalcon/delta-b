@@ -12,6 +12,7 @@
 (load "builtin/object")
 (load "builtin/string")
 (load "builtin/integer")
+(load "builtin/symbol")
 (load "builtin/bmethod")
 
 (define-record-type interpreter #t #t
@@ -35,6 +36,7 @@
   (list (list "Object"        make-object-proto       *object-methods*)
         (list "Integer"       make-integer-proto      *integer-methods*)
         (list "String"        make-string-proto       *string-methods*)
+        (list "Symbol"        make-symbol-proto       *symbol-methods*)
         (list "BuiltinMethod" make-bmethod-proto      *bmethod-methods*)))
 
 (define (add-protos interp)
@@ -88,7 +90,8 @@
            ((integer) (new-integer-object interp (third expr)))
            ((float) ...)
            ((string) (new-string-object interp (third expr)))
-           ((symbol) ...)
+           ((symbol) (new-symbol-object interp  ;; remove leading "#"
+                                        (string-slice (third expr) 1)))
            ((identifier) ...)
            (else ...)))
         ((ast-block? expr)
