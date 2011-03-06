@@ -51,29 +51,38 @@
      (lambda (proto-entry)
        (let ((proto (namespace-get bns (first proto-entry))))
          (add-proto-methods-1 interp proto (third proto-entry))))
-    *protos*)))
+     *protos*)))
 
 (define (find-builtin-proto interp name)
   (let ((ns (interpreter-builtin-ns interp)))
     (namespace-get ns name)))
 
 ;; Tokenize, parse and evaluate the Delta code in the given string.
+;; XXX do we need to pass a namespace?
 (define (delta-eval-string s interp)
   (let* ((tokens (tokenize s))
          (_ (when *debug* (printf "[tokens] ~s~%" tokens)))
-         (stmts (match-program tokens)))
+         (stmts (match-program tokens))
+         (ns (interpreter-toplevel-ns interp)))
     (when *debug*
       (pretty-print stmts))
     (let ((result #f))
       (for-each
        (lambda (expr)
-         (set! result
-               (delta-eval expr (interpreter-toplevel-ns interp) interp)))
-         stmts)
+         (set! result (delta-eval expr ns interp)))
+       stmts)
       (when result
-        (printf "~s~%" (delta-object-repr result))))))
+        (let ((repr (get-delta-object-repr result ns interp)))
+          (printf "~a~%" (delta-object-data repr)))))))
 ;; FIXME: printing should be done by the caller
 ;; and we should probably pass _all_ of the results, not just the last...
+
+;; Get the representation of a Delta object by calling its 'repr'
+;; method. Returns a Delta object (presumably a String).
+(define (get-delta-object-repr obj ns interp)
+  (let* ((method (delta-object-get-slot obj "repr"))
+         (f (delta-object-data method)))
+    (f obj '() ns interp)))
 
 ;; Evaluate the Delta expression EXPR (an AST object) in namespace NS.
 (define (delta-eval expr ns interp)
