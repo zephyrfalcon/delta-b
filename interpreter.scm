@@ -71,9 +71,7 @@
        (lambda (expr)
          (set! result (delta-eval expr ns interp)))
        stmts)
-      (when result
-        (let ((repr (get-delta-object-repr result ns interp)))
-          (printf "~a~%" (delta-object-data repr)))))))
+      result)))
 ;; FIXME: printing should be done by the caller
 ;; and we should probably pass _all_ of the results, not just the last...
 
