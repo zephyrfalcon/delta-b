@@ -58,6 +58,7 @@
 - Some obvious things we're going to need before the REPL is even
   remotely useful:
 
-  - symbols
+  - slot access
   - lists
-  - name lookup
+  - name lookup / access
+  - cloning / init

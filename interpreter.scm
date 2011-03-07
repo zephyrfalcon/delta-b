@@ -13,6 +13,7 @@
 (load "builtin/string")
 (load "builtin/integer")
 (load "builtin/symbol")
+(load "builtin/list")
 (load "builtin/bmethod")
 
 (define-record-type interpreter #t #t
@@ -37,6 +38,7 @@
         (list "Integer"       make-integer-proto      *integer-methods*)
         (list "String"        make-string-proto       *string-methods*)
         (list "Symbol"        make-symbol-proto       *symbol-methods*)
+        (list "List"          make-list-proto         *list-methods*)
         (list "BuiltinMethod" make-bmethod-proto      *bmethod-methods*)))
 
 (define (add-protos interp)

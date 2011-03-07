@@ -6,7 +6,7 @@ experiment with. There have been various incarnations before
 (unreleased); what they all had in common was that they were
 prototype-based and often had weird syntax. :) I went through several
 names, eventually settling on the name Delta (for now). The name is a
-reference to differential inheritance, as used by Io.
+reference to differential inheritance, as used by e.g. Io.
 
 The first version of Delta was written in Chicken Scheme. Since
 Chicken is a compiler, I had a "clever" idea: the Delta parser would
@@ -14,7 +14,7 @@ represent a program's AST as an S-expression, which could then
 literally be eval-uated by Chicken. Also, since the AST would
 essentially be valid Scheme code, it could be compiled to an
 executable. ... The results were mixed; the idea worked, but the
-language was super slow, even compiled. I refer to this version as
+language was super slow, even compiled. I refer to this experiment as
 Delta/A.
 
 I am now working on Delta/B. I made some changes to the object
