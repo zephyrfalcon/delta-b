@@ -16,7 +16,7 @@
 
 ;; Object get: #name [default]
 (define (m-object-get-slot obj args ns interp)
-  (let ((slot-name (first args))
+  (let ((slot-name (delta-object-data (first args))) ;; must be a Symbol
         (default (list-ref args 1 #f)))
     (if default
         (or (delta-object-get-slot obj slot-name) default) ;; use default 

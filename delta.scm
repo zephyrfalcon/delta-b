@@ -18,7 +18,7 @@
   (flush)
   (let ((line (read-line)))
     (if (eof-object? line)
-        (print "Doegieeee!")
+        (print "Exiting interpreter...")
         (begin
           (when *debug*
             (printf "Aha, you want to evaluate: ~s~%" line))

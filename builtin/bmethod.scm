@@ -12,7 +12,7 @@
 ;;; --- methods ---
 
 (define (m-bmethod-repr obj args ns interp)
-  (new-string-object "#<builtin-method>"))
+  (new-string-object interp "#<builtin-method>"))
 (define m-bmethod-as-string m-bmethod-repr)
 
 (define *bmethod-methods*
