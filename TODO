@@ -38,6 +38,9 @@
 - We need a way to run all tests (and show results properly). See the
   Gauche manual.
 
+- Need higher-level tests, where we take a Delta expression (or a
+  series of expressions) and check them against an expected result.
+
 --- OBJECTS
 
 - The following idiom seems common:
@@ -52,6 +55,12 @@
 - Symbols should be cached. Much like in Scheme, two different
   mentions of a symbol #foo should refer to the same object (and have
   the same id). Maybe this cache should be in the interpreter object.
+  [NOTE: Not really high priority for Delta/B...]
+
+--- AUXILIARY
+
+- Need helper procedures that check the (Delta) type or type tag of
+  objects. Useful for argument checking.
 
 --- NEXT UP
 
