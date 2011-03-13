@@ -94,13 +94,17 @@
            ((string) (new-string-object interp (third expr)))
            ((symbol) (new-symbol-object interp  ;; remove leading "#"
                                         (string-slice (third expr) 1)))
-           ((identifier) ...)
+           ((identifier) (delta-lookup-name (third expr) ns))
            (else ...)))
         ((ast-block? expr)
          ...)
         ((ast-method-call-chain? expr)
          (delta-eval-mcc expr ns interp))
         (else (error "Unknown AST node type:" expr))))
+
+(define (delta-lookup-name name ns)
+  (or (namespace-get ns name)
+      (error "Undefined name: " name)))
 
 ;; Evaluate a method call chain.
 (define (delta-eval-mcc mcc ns interp)

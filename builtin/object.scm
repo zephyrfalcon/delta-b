@@ -25,6 +25,12 @@
 (define (m-object-update-slot obj args ns interp)
   ...)
 
+(define (m-object-local-slots obj args ns interp)
+  ...)
+
+(define (m-object-all-slots obj args ns interp)
+  ...)
+
 (define *object-methods*
   (list (list "as-string" m-object-as-string)
         (list "get-slot" m-object-get-slot)
