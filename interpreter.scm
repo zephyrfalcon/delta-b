@@ -15,6 +15,7 @@
 (load "builtin/symbol")
 (load "builtin/list")
 (load "builtin/bmethod")
+(load "builtin/block")
 
 (define-record-type interpreter #t #t
   builtin-ns    ;; contains protos
@@ -39,7 +40,9 @@
         (list "String"        make-string-proto       *string-methods*)
         (list "Symbol"        make-symbol-proto       *symbol-methods*)
         (list "List"          make-list-proto         *list-methods*)
-        (list "BuiltinMethod" make-bmethod-proto      *bmethod-methods*)))
+        (list "BuiltinMethod" make-bmethod-proto      *bmethod-methods*)
+        (list "Block"         make-block-proto        *block-methods*)
+        ))
 
 (define (add-protos interp)
   (let ((ns (interpreter-builtin-ns interp)))
@@ -97,7 +100,8 @@
            ((identifier) (delta-lookup-name (third expr) ns))
            (else ...)))
         ((ast-block? expr)
-         ...)
+         (let ((blk (make-delta-block-from-ast expr ns)))
+           (new-block-object interp blk)))
         ((ast-method-call-chain? expr)
          (delta-eval-mcc expr ns interp))
         (else (error "Unknown AST node type:" expr))))
