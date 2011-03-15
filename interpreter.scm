@@ -137,3 +137,18 @@
               (evaled-args (map (^a (delta-eval a ns interp)) ast-args)))
           (f target evaled-args ns interp))
         (error "Unknown method:" method-name))))
+
+;; Evaluate the expressions in the given delta-block record, in the
+;; given namespace. (Usually said namespace should derive from the
+;; block's associated namespace.)
+;; Will be used by built-in method calls.
+(define (delta-eval-block block ns interp)
+  (let ((result #f))
+    (for-each
+     (lambda (expr)
+       (set! result (delta-eval expr ns interp)))
+     (delta-block-exprs block))
+    result))
+;; FIXME: if result is #f, look up and return the Null object
+;; (at point of writing, it doesn't exist yet :-)
+
