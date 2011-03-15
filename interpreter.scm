@@ -16,6 +16,7 @@
 (load "builtin/list")
 (load "builtin/bmethod")
 (load "builtin/block")
+(load "builtin/umethod")
 
 (define-record-type interpreter #t #t
   builtin-ns    ;; contains protos
@@ -42,6 +43,7 @@
         (list "List"          make-list-proto         *list-methods*)
         (list "BuiltinMethod" make-bmethod-proto      *bmethod-methods*)
         (list "Block"         make-block-proto        *block-methods*)
+        (list "Method"        make-umethod-proto      *umethod-methods*)
         ))
 
 (define (add-protos interp)
