@@ -10,6 +10,7 @@
 
 (load "proto-tools")
 (load "builtin/object")
+(load "builtin/null")
 (load "builtin/string")
 (load "builtin/integer")
 (load "builtin/symbol")
@@ -37,6 +38,7 @@
 
 (define *protos*
   (list (list "Object"        make-object-proto       *object-methods*)
+        (list "Null"          make-null-proto         *null-methods*)
         (list "Integer"       make-integer-proto      *integer-methods*)
         (list "String"        make-string-proto       *string-methods*)
         (list "Symbol"        make-symbol-proto       *symbol-methods*)
