@@ -152,7 +152,5 @@
      (lambda (expr)
        (set! result (delta-eval expr ns interp)))
      (delta-block-exprs block))
-    result))
-;; FIXME: if result is #f, look up and return the Null object
-;; (at point of writing, it doesn't exist yet :-)
+    (or result (null-object interp))))
 
