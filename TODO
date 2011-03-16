@@ -71,3 +71,6 @@
   - lists
   - name lookup / access
   - cloning / init
+  - booleans
+  - Namespace proto
+  - Map proto?
