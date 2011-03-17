@@ -1,0 +1,9 @@
+-- numbers.txt
+-- Test Integer, simple arithmetic, etc.
+
+3
+=> 3
+
+3 plus: 4
+=> 7
+

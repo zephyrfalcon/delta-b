@@ -34,3 +34,26 @@
         (substring s
                    (min (max corr-idx1 0) sl)
                    (min (max corr-idx2 0) sl)))))
+
+;; Gauche doesn't like "strange" characters (like #xFA) in files, and
+;; using with-input-from-file and port->string does not seem to work
+;; if a file contains them. Therefore we write our own function that
+;; reads all of a file's contents, and removes what Gauche doesn't
+;; like.
+
+;; (If there is a better way to do this, I'd like to know about it...)
+
+;; read the complete contents of a file, and return it as one big string.
+(define (read-all-from-file filename :key (blocksize 1024))
+  (let ((p (open-input-file filename)))
+    (let ((data (read-all-from-port p :blocksize blocksize)))
+      (close-input-port p)
+      data)))
+
+(define (read-all-from-port port :key (blocksize 1024))
+  (let loop ((chunks '()))
+    (let ((chunk (read-block blocksize port)))
+      (if (eof-object? chunk)
+          ;; remove any "weird" characters
+          (string-incomplete->complete (string-join (reverse chunks) "") :omit)
+          (loop (cons chunk chunks))))))
