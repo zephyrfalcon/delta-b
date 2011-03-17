@@ -1,6 +1,11 @@
 # TODO
 
-[NOTES]
+(next up:)
+
+! Need higher-level tests, where we take a Delta expression (or a
+  series of expressions) and check them against an expected result.
+
+--- NOTES
 
 - All built-in methods must have the following signature:
   (obj args ns interp)
@@ -25,10 +30,6 @@
   of the modules use code that uses the other; this is deferred until
   runtime.
 
-- The various functions for making built-in protos look much the same,
-  we can probably write a factory function for this, or maybe a macro
-  if necessary.
-
 --- PARSER
 
 - Empty statements should be allowed (i.e., a single dot).
@@ -38,8 +39,6 @@
 - We need a way to run all tests (and show results properly). See the
   Gauche manual.
 
-- Need higher-level tests, where we take a Delta expression (or a
-  series of expressions) and check them against an expected result.
 
 --- OBJECTS
 
