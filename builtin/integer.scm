@@ -26,4 +26,4 @@
 ;;; --- Integer prototype ---
 
 (define make-integer-proto
-  (make-proto-maker 'integer *integer-methods* :default 0))
+  (make-proto-maker 'integer :default 0))

@@ -26,4 +26,4 @@
 (define dummy-block (make-delta-block '() #f))
 
 (define make-block-proto
-  (make-proto-maker 'block *block-methods* :default dummy-block))
+  (make-proto-maker 'block :default dummy-block))

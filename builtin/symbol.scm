@@ -25,7 +25,7 @@
 ;;; --- Symbol prototype ---
 
 (define make-symbol-proto
-  (make-proto-maker 'symbol *symbol-methods* :default "xyzzy"))
+  (make-proto-maker 'symbol :default "xyzzy"))
 
 ;; Is there such a thing as an empty Symbol? Hmm...
 

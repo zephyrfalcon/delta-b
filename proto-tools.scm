@@ -1,6 +1,6 @@
 ;; proto-tools.scm
 
-(define (make-proto-maker type-tag methods :key (default #f) (parent "Object"))
+(define (make-proto-maker type-tag :key (default #f) (parent "Object"))
   (lambda (interp)
     (let* ((bns (interpreter-builtin-ns interp))
            (obj-proto (if parent (namespace-get bns parent) #f))

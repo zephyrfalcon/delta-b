@@ -24,4 +24,4 @@
 ;;; --- Null proto ---
 
 (define make-null-proto
-  (make-proto-maker 'null *null-methods* :default 'null))
+  (make-proto-maker 'null :default 'null))

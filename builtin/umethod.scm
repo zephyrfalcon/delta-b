@@ -52,6 +52,6 @@
 (define dummy-umethod 'FIXME)
 
 (define make-umethod-proto
-  (make-proto-maker 'umethod *umethod-methods* :default dummy-umethod))
+  (make-proto-maker 'umethod :default dummy-umethod))
   
 

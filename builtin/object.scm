@@ -50,4 +50,4 @@
 ;;; --- Object prototype ---
 
 (define make-object-proto
-  (make-proto-maker #f *object-methods* :parent #f))
+  (make-proto-maker #f :parent #f))

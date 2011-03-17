@@ -45,4 +45,4 @@
 ;;; --- List prototype ---
 
 (define make-list-proto
-  (make-proto-maker 'list *list-methods* :default '()))
+  (make-proto-maker 'list :default '()))

@@ -31,4 +31,4 @@
 ;;; --- String prototype ---
 
 (define make-string-proto
-  (make-proto-maker 'string *string-methods* :default ""))
+  (make-proto-maker 'string :default ""))

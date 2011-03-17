@@ -22,4 +22,4 @@
 ;;; --- BuiltinMethod proto ---
 
 (define make-bmethod-proto
-  (make-proto-maker 'bmethod *bmethod-methods* :default dummy-bmethod))
+  (make-proto-maker 'bmethod :default dummy-bmethod))
