@@ -1,0 +1,156 @@
+# DESIGN
+
+This document describes the possible design (or what passes for it :-) of the
+Delta language. It does not necessarily reflect the actual, current state of
+the code; rather, it's more of a collection of ideas.
+
+NOT meant as a manual.
+
+And yes, the syntax is pretty weird. This is intentional. I am planning a much
+cleaner syntax for its successor, Delta/C.
+
+
+---[ Syntax ]---
+
+Delta is a prototype-based OO language, much like Io. This means that there
+are no classes, only objects. We start off with a number of built-in
+prototypes, which can (usually) be cloned.
+
+An expression in Delta can be a literal:
+
+    3                  -- integer
+    3.1415             -- float
+    "bah humbug"       -- string
+    #foo               -- symbol
+
+...or a method call chain:
+
+    3 plus: 4
+    List new: 1 2 3 4
+    list-of-numbers sort: println:
+
+...or a block, which consists of zero or more expressions between curly
+braces:
+
+    {}
+    { 1 println:.
+      2 println:.
+      3 println:.
+    }
+
+Statements end in a dot ".", but this can be omitted if the statement is
+followed by ")" or "}".
+
+{{FIXME: Description of expressions vs statements is vague}}
+
+
+---[ Objects ]---
+
+Everything is an object. To create a new object, we can take an existing one
+and clone it:
+
+    a <- Object clone:.
+    -- NOTE: This assignment syntax has not been implemented yet at the
+    -- moment of writing.
+
+Arbitrary slots can be set on objects:
+
+    a set-slot: #foo 42.
+    a get-slot: #foo println:.     -- prints 42
+
+    -- alternative syntax for set-slot:
+    a foo <- 42.
+
+Slots that are methods can be called using method call syntax.
+
+    a set-slot: #say-hello (Method new: {
+      "Hi, I am object" print:.
+      ~ println:.
+    }
+    
+    a say-hello:.    -- prints "Hi, I am object <...>"
+
+    -- alternative syntax:
+    a say-hello <- Method new: { ... }
+
+Slots that aren't methods are not accessible directly, although they can be
+accessed using get-slot. As a rule of thumb, slots that aren't meant to be
+called should have names starting with '@'.
+
+    a set-slot: #@xyzzy 100.
+    a @xyzzy:.               -- ILLEGAL, even if @xyzzy were callable
+    @ get-slot #@xyzzy.      -- OK
+
+Generally, the preferred way of talking to an object is through its methods.
+So, accessing slots directly with get-slot is discouraged, unless it's done
+from an object's methods itself. Slots whose names start with '@' are
+semi-private, kind of like Ruby. (I.e. they can be accessed if necessary, but
+code using the object should really call a method on it, not manipulate its
+slots directly.)
+
+---[ Self ]---
+
+Within user-defined methods, the symbol '~' stands for "self", i.e. the target
+object that the method is called on. Other constructs with code blocks may use
+this symbol as well.
+
+    b <- Object clone: do: {
+        ~ new-slot: #baz #read #write.
+        ~ set-slot: #barf (Method new: #name {
+            "Hello, #{name}!" interpolate: println:.
+        }).
+    }.
+
+---[ Syntactic sugar ]---
+
+The idea is to start with a core syntax, then add syntactic sugar where
+necessary or desirable. In principle, it should be possible to do everything
+with as little syntax as possible; the additional syntax would merely be a
+convenience.
+
+For example, namespaces are first-class and can be manipulated directly:
+
+    Namespace current: set: #x 10.
+    x println:.   -- prints 10
+
+But because creation and assignment of variables is so common, we will
+normally want an easier way to write that, rather than using `Namespace
+current:`. So at some point I will add sugar:
+
+    x <- 10.
+
+---[ Lazy evaluation ]---
+
+Code blocks are evaluated on demand. We can use this to write our own
+constructs for many things: loops, custom methods or functions, conditionals,
+etc.
+
+---[ New ]---
+
+As a convention, the 'new:' method is used to clone an object and at the same
+time pass some arguments.
+
+    names <- List new: "Guido" "Larry" "Matz".
+    -- equivalent to:
+    names <- List clone: append: "Guido" append: "Larry" append: "Matz".
+
+---[ new-slot ]---
+
+The 'new-slot:' method can be used to add a slot, plus getters and/or setters
+for it. I don't really like getters and setters per se, but they are in line
+with the idea of calling an object's methods, rather than manipulating its
+slots directly.
+
+    d <- Object clone: do: {
+        ~ new-slot: #foo #read #write.
+    }.
+
+Here, d is a new object, deriving from Object, with a slot '@foo', a getter
+method 'foo:', and a setter method 'set-foo:'.
+
+Alternatively, the method 'foo:' could serve as both a getter (when called
+with no arguments) and a setter (when called with one argument).
+
+It's clearer to have a 'set-' prefix though for methods that change an
+object's state. Although it doesn't always apply...
+
