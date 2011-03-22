@@ -29,6 +29,15 @@
                          partitions)))
             (else
              (loop (cdr lines) (cons (car lines) curr-par) partitions)))))
+
+  (define (test-partition part)
+    (receive (butlast last)
+        (split-atlast part)
+      (let ((code (string-join butlast "\n"))
+            (result-repr (car last)))
+        ...)))
+  ;; TODO: fire up Delta interpreter, feed it the code, check the
+  ;; string repr of the result, compare to expected repr
   
   (let* ((data (read-all-from-file filename))
          (lines (string-split data #\newline))
