@@ -4,6 +4,8 @@
   (export-all))
 (select-module tools)
 
+(use srfi-13)
+
 (define (unique lst)
   (let ((hash (make-hash-table 'equal?)))
     (for-each (lambda (x) (hash-table-put! hash x #t))
@@ -64,3 +66,12 @@
 (define (split-at-last lst)
   (let ((len (length lst)))
     (split-at lst (- len 1))))
+
+;; Given the Delta statement S, append a dot if it doesn't already end in one.
+;; (This is a bit of a hack to make the REPL accept expressions like "3"
+;; without having to type the final period each time.)
+(define (maybe-append-dot s)
+  (let ((t (string-trim-right s)))
+    (if (string-suffix? "." t)
+        t
+        (string-append t "."))))
