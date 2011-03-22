@@ -22,7 +22,7 @@
         (begin
           (when *debug*
             (printf "Aha, you want to evaluate: ~s~%" line))
-          (let ((result (delta-eval-string (string-append line ".") interp)))
+          (let ((result (delta-eval-string (maybe-append-dot line) interp)))
             (when result
               (let* ((ns (interpreter-toplevel-ns interp))
                      (repr (get-delta-object-repr result ns interp)))

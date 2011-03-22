@@ -56,7 +56,7 @@ or a statement enclosed in parentheses.
 |#
 
 (use srfi-1)
-(load "ast") 
+(load "ast")
 
 (define *literals* '(integer float string identifier symbol))
 
@@ -100,17 +100,22 @@ or a statement enclosed in parentheses.
 ;; rparen, rbrace). note that the method call chain may have zero
 ;; method calls, i.e. consists of a single value.
 (define (match-statement tokens)
-  (receive (expr rest)
-      (match-method-call-chain tokens)
-    (if expr
-        (cond ((null? rest)
-               (error "Unexpected end of tokens"))
-              ((equal? (caar rest) 'dot)
-               (values expr (cdr rest)))
-              ((member (caar rest) '(rparen rbrace))
-               (values expr rest))
-              (else (error "Invalid syntax: " rest)))
-        (values #f #f))))
+  (if (and (not (null? tokens))
+           (equal? (car tokens) '(dot ".")))
+      ;; skip empty statement
+      (match-statement (cdr tokens))
+      ;; parse non-empty statement
+      (receive (expr rest)
+          (match-method-call-chain tokens)
+        (if expr
+            (cond ((null? rest)
+                   (error "Unexpected end of tokens"))
+                  ((equal? (caar rest) 'dot)
+                   (values expr (cdr rest)))
+                  ((member (caar rest) '(rparen rbrace))
+                   (values expr rest))
+                  (else (error "Invalid syntax: " rest)))
+            (values #f #f)))))
 
 (define (match-expression tokens)
   (_match-any (list match-literal
