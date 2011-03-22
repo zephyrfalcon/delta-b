@@ -57,3 +57,10 @@
           ;; remove any "weird" characters
           (string-incomplete->complete (string-join (reverse chunks) "") :omit)
           (loop (cons chunk chunks))))))
+
+;; splits the last at the last element, and returns two values, a list
+;; containing all elements but the last, and a list with only the last
+;; element.
+(define (split-at-last lst)
+  (let ((len (length lst)))
+    (split-at lst (- len 1))))

@@ -18,4 +18,10 @@
 (test* "s[9:]"  ""     (string-slice "abcde" 9))
 (test* "s[4:2]"  ""    (string-slice "abcde" 4 2))
 
+(test-section "split-at-last")
+(receive (butlast last)
+    (split-at-last '(a b c d e))
+  (test* "everything but last" '(a b c d) butlast)
+  (test* "last" '(e) last))
+
 (test-end)
