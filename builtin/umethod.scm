@@ -42,7 +42,23 @@
 ;; Other objects may be bound as well (e.g. maybe a shorthand to the current
 ;; namespace?).
 (define (m-umethod-call obj args ns interp)
-  ...)
+  (let ((target (car args))
+        (rest-args (cdr args))
+        (umethod (delta-object-data obj)))
+    (let ((arg-names (umethod-args umethod))
+          (blk (umethod-block umethod)))
+      (let ((new-ns (make-namespace (delta-block-namespace blk))))
+        (namespace-set! new-ns "~" target)
+        (namespace-set-many! new-ns arg-names args) ;; TBD
+        ;; bind a bunch of stuff in this new namespace
+        ;; then evaluate the block's expressions in it
+        ;; returning a result
+        (let ((result (null-object interp)))
+          (for-each (^e (set! result
+                              (delta-eval e new-ns interp)))
+                    (delta-block-exprs blk))
+          result)
+        ))))
 
 (define (m-umethod-clone obj args ns interp)
   ...)
