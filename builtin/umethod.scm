@@ -14,7 +14,7 @@
 (define (new-umethod-object interp args block)
   (let* ((umethod-proto (find-builtin-proto interp "Method"))
          (umethod (make-delta-umethod args block))
-         (uobj (clone-object 'umethod :data umethod)))
+         (uobj (clone-object umethod-proto :data umethod)))
     uobj))
 
 ;;; --- methods ---
@@ -22,7 +22,12 @@
 ;; Method new: [args...] block
 ;; Create a new user-defined method with zero or more arguments.
 (define (m-umethod-new obj args ns interp)
-  ...)
+  (receive (sym-args rest-args)
+      (span (^a (equal? (delta-object-type-tag a) 'symbol)) args)
+    (assert (equal? (delta-object-type-tag (car rest-args)) 'block))
+    (let ((arg-names (map (^a (delta-object-data a)) sym-args))
+          (blk (delta-object-data (car rest-args))))
+      (new-umethod-object interp arg-names blk))))
 ;; need: zero or more symbols
 ;; then a block (already parsed & evaluated as a Delta Block object)
 ;; everything else will be ignored

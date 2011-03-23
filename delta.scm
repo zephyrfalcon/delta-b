@@ -8,7 +8,7 @@
 (load "interpreter")
 (load "delta-object")
 
-(define *delta-version* "0.1.6")
+(define *delta-version* "0.1.7")
 (define *welcome-msg* (format "Welcome to Delta/B ~a." *delta-version*))
 (define *prompt* ">> ")
 (define *debug* #t)
