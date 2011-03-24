@@ -54,10 +54,25 @@
   (hash-table-keys (namespace-slots ns)))
 
 (define (namespace-names-all ns)
-  (let* ((names (namespace-names-local ns))
-         (parent (namespace-parent ns)))
+  (let ((names (namespace-names-local ns))
+        (parent (namespace-parent ns)))
     (if parent
         (append names (namespace-names-all parent))
         names)))
 
+;; Set multiple names/values in a namespace.
+;; If the list of names is longer than the list of values, a default will be
+;; assigned for the extra names.
+;; If the list of values is longer, then the redundant values will be ignored.
+(define (namespace-set-many! ns names values :key (default #f))
+  (if (null? names)
+      #t ;; done, no matter if we still have values or not
+      (if (null? values)
+          (begin
+            (namespace-set! ns (car names) default)
+            (namespace-set-many! ns (cdr names) values :default default))
+          (begin
+            (namespace-set! ns (car names) (car values))
+            (namespace-set-many! ns (cdr names) (cdr values)
+                                 :default default)))))
 
