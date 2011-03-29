@@ -13,6 +13,11 @@
 (define (m-namespace-current obj args ns interp)
   (new-namespace-object interp ns))
 
+;; Namespace builtin: => wrapper around built-in namespace
+;; This would return a fresh Namespace object each time it's called, which
+;; may be counter-intuitive. We could avoid this by using some sort of cache
+;; (e.g. an attribute on the Namespace proto itself, or a global variable
+;; in Scheme, if we want it hidden).
 (define (m-namespace-builtin obj args ns interp)
   ...)
 
@@ -29,6 +34,9 @@
   ...)
 
 (define (m-namespace-parent obj args ns interp)
+  ...)
+
+(define (m-namespace-names obj args ns interp)
   ...)
 
 (define *namespace-methods*

@@ -48,11 +48,11 @@
     (let ((arg-names (umethod-args umethod))
           (blk (umethod-block umethod)))
       (let ((new-ns (make-namespace (delta-block-namespace blk))))
-        (namespace-set! new-ns "~" target)
-        (namespace-set-many! new-ns arg-names args) ;; TBD
         ;; bind a bunch of stuff in this new namespace
-        ;; then evaluate the block's expressions in it
-        ;; returning a result
+        (namespace-set! new-ns "~" target)
+        (namespace-set-many! new-ns arg-names args
+                             :default (null-object interp))
+        ;; then evaluate the block's expressions in it, returning a result
         (let ((result (null-object interp)))
           (for-each (^e (set! result
                               (delta-eval e new-ns interp)))
