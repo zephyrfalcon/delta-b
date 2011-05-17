@@ -1,0 +1,107 @@
+Object model, proposal, constantly in flux, etc.
+
+-- Object:
+   - is-null: -> bool
+   - as-string: -> String
+   - repr: -> String
+   - as-bool: -> bool
+     [maybe; depending on what we want to consider 'truth'... e.g. Pythonic,
+     Ruby, Scheme, etc]
+   - get-slot: name [default]
+   - set-slot: name value
+   - del-slot: name
+
+-- String (Object)
+   - as-number: -> Number [Integer, Float] (may support bases)
+   - length: -> Integer
+   - upper: -> String
+   - lower: -> String
+   - split: [sep] -> List (of Strings)
+   - print: -> self
+   - println: -> self
+   - interpolate: -> interpolated self
+   - reverse: -> String
+
+-- Number (Object)
+   - as-string: -> String
+   - abs: -> Number
+   - plus: number [others...] -> Number
+   - minus: number [others...] -> Number
+   - times: number [others...] -> Number
+   - divided-by: number [others...] -> Number
+   - negate: -> Number
+
+   [stuff like sin:, etc, should really be in a Trig package or something.]
+
+-- Integer (Number)
+   
+
+-- Float (Number)
+   - as-integer: -> Integer
+   - floor: -> Float
+   - ceil: -> Float
+
+-- List (Object)
+   - join: [sep] [converter?] --> String
+   - sum: [default] -> Number
+   - foldl ?
+   - foldr ?
+   - map: [var] code (~ in code block refers to current item)
+   - filter: [var] code
+   - reduce: var1 var2 default code   (== fold?)
+   - length: -> Integer
+   - is-empty: -> bool
+   - reverse: List
+   - sort: ?
+     (should take some sort of comparison thingy)
+     (by default, do we sort in place? ditto for reverse...)
+
+-- Map (Object)
+   - keys: -> List
+   - values: -> List
+   - items: -> List
+
+-- Array (Object)
+   [should maybe derive from List; shares many of the same methods]
+
+-- True / False (Object)
+   - if-true: code -> result of code
+   - if-false: code -> result of code
+   - if: code-if-true code-if-false -> result of selected code
+   - not: -> bool
+   - and: <args>+ 
+     if an arg is a boolean, use that; if it's a code block, evaluate it and
+     use its result, assuming it's a bool; we use code blocks for lazy
+     evaluation (although depending on Delta's evaluation order, that may not
+     be necessary in this case)
+   - or: <args>+
+   - xor: <args>+
+
+-- Null (Object)
+
+-- Block (Object)
+   - call: ?
+
+-- BuiltinMethod (Object)
+   - call: ?
+
+-- Namespace (Object)
+   - parent: -> Namespace or Null
+   - get: name [default]
+   - get-local: name [default]
+   - set: name value
+   - del: name
+   - local-names: -> List
+   - as-dict: -> Map
+   - all-names: -> List
+
+-- Symbol (Object)
+   - as-string: -> String
+   - repr: -> String
+
+-- Method (Object)
+   - call: ?
+
+-- BoundMethod (?)
+   -- call: ?
+
